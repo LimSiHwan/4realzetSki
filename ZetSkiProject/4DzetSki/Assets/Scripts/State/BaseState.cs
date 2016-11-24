@@ -1,15 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BaseState : MonoBehaviour {
+public abstract class BaseState : MonoBehaviour {
+	
+	protected BaseMotor baseMotor;
 
-	// Use this for initialization
-	void Start () {
-	
+	#region 1. 베이스모터 찾기
+	public virtual void Construct()
+	{
+		baseMotor = GetComponent<BaseMotor>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	#endregion
+
+	#region 2. 상태 없애기
+	public virtual void Destruct()
+	{
+		Destroy(this);
+	}
+	#endregion
+
+	#region 3. 상태바꾸기
+	public virtual void Transition()
+	{
+
+	}
+	#endregion
+
+	public abstract Vector3 ProcessMotion(Vector3 input);
+	public virtual Quaternion ProcessRotation(Quaternion rotation)
+	{	
+		return transform.rotation;
 	}
 }

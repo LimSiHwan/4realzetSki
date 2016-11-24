@@ -4,18 +4,19 @@ using System.Collections;
 public abstract class BaseMotor : MonoBehaviour
 {
 	protected CharacterController controller;
+	protected BaseState state;
 	protected Transform thisTransform;
 
 	 //속도, 점프 높이
-	private float BaseSpeed = 5.0f;
-	private float BaseJump = 5.0f;
+	private float baseSpeed = 5.0f;
+	private float baseSpeedUpDown = 0.3f;
+	private float baseJump = 5.0f;
 	
-	public float Speed {get { return BaseSpeed;} set { BaseSpeed = value; }}
-	public float Jump {get {return BaseJump; } }
+	public float Speed {get { return baseSpeed;} set { baseSpeed = value; }}
+	public float Jump {get {return baseJump; } }
 
 	// 움직이는 방향
-	protected Vector3 InputDirection { get;set; } 
-	
+	protected Vector3 MoveVector { get;set; } 
 	// 움직임
 	protected abstract void MoveDirection();
 
@@ -23,6 +24,10 @@ public abstract class BaseMotor : MonoBehaviour
 	{
 		controller = gameObject.AddComponent<CharacterController>();
 		thisTransform = transform;
+
+		state = gameObject.AddComponent<DrivingState>();
+		state.Construct();
+
 	}
 
 	void Update()
@@ -32,6 +37,6 @@ public abstract class BaseMotor : MonoBehaviour
 	
 	protected virtual void Move()
 	{
-		controller.Move(InputDirection * Time.deltaTime);
+		controller.Move(MoveVector * Time.deltaTime);
 	}
 }
