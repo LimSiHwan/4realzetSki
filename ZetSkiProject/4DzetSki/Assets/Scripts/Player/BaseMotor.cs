@@ -3,6 +3,7 @@ using System.Collections;
 
 public abstract class BaseMotor : MonoBehaviour
 {
+	//기어
 	public enum Gear
 	{
 		Break,
@@ -12,6 +13,7 @@ public abstract class BaseMotor : MonoBehaviour
 		Two,
 		Three
 	}
+	//방향키
 	public enum KeyArrow
 	{
 		None,
@@ -20,8 +22,7 @@ public abstract class BaseMotor : MonoBehaviour
 		RightArrow,
 		LeftArrow
 	}
-
-	protected Gear gear;
+	
 	protected KeyArrow keyArrow;
 	protected CharacterController controller;
 	protected BaseState state;
@@ -39,7 +40,7 @@ public abstract class BaseMotor : MonoBehaviour
 	private float baseSpeedDown = 0.15f; 
 	//가만히 있을때 줄어드는 속도
 	private float baseNonSpeed = 0.15f;
-	//제동력
+	//제동력 브레이크
 	private float baseStopSpeed = 0.15f;
 	
 	private float baseJump = 5.0f;
@@ -51,6 +52,7 @@ public abstract class BaseMotor : MonoBehaviour
 	protected float SpeedDown {get {return baseSpeedDown; } } 
 	protected float NonSpeed {get { return baseNonSpeed;} }
 	protected float StopSpeed {get {return baseStopSpeed; } }
+	protected Gear gear {set;get; }
 	public float Jump {get {return baseJump; } }
 
 	// 움직이는 방향
@@ -58,7 +60,7 @@ public abstract class BaseMotor : MonoBehaviour
 	// 움직이는 회전
 	protected Quaternion MoveRotation {get;set; }
 	// 움직임
-	protected abstract void MoveDirection();
+	protected abstract void UpdateMotor();
 
 	protected virtual void Start()
 	{
@@ -74,7 +76,7 @@ public abstract class BaseMotor : MonoBehaviour
 
 	void Update()
 	{
-		MoveDirection();
+		UpdateMotor();
 	}
 	
 	protected virtual void Move()

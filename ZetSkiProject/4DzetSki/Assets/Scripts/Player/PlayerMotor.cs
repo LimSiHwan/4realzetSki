@@ -4,18 +4,16 @@ using System;
 
 public class PlayerMotor:BaseMotor
 {
-	protected override void MoveDirection()
+	protected override void UpdateMotor()
 	{
 		//방향을 넣어줌
 		MoveVector = InputDir();
 
 		//움직일때 방향, 속도를 넣어줌
 		MoveVector = state.ProcessMotion(MoveVector);
-		//MoveRotation = state.ProcessRotation(MoveVector);
 		
 		//움직임
-		Move(); 
-		//Rotate();
+		Move();
 	}
 
 	#region 1. 위 방향키
@@ -74,7 +72,7 @@ public class PlayerMotor:BaseMotor
 	}
 	#endregion
 
-	#region 5. 아무것도 누르지않았을때
+	#region 5. 모든 방향키를 누르지 않을때
 	private Vector3 NonKeyArrow(ref Vector3 dir)
 	{
 		if(Input.GetKey(KeyCode.DownArrow) == false
@@ -95,6 +93,8 @@ public class PlayerMotor:BaseMotor
 		return dir;
 	}
 	#endregion
+
+	#region 6. z(속도 증가), x(속도 감소) 
 	private void MoveSpeed()
 	{
 		//엑셀
@@ -117,6 +117,9 @@ public class PlayerMotor:BaseMotor
 			}
 		}
 	}
+	#endregion
+
+	#region 7. 기어
 	private void MoveGear()
 	{
 		switch(gear)
@@ -166,6 +169,8 @@ public class PlayerMotor:BaseMotor
 				break;
 		}
 	}
+	#endregion
+
 	private Vector3 InputDir()
 	{
 		Vector3 dir = Vector3.zero;
@@ -175,8 +180,6 @@ public class PlayerMotor:BaseMotor
 		DownArrow(ref dir);
 		NonKeyArrow(ref dir);
 		MoveGear();
-
-		Debug.Log(gear);
 
 		if(dir.magnitude > 1)
 			dir.Normalize();
