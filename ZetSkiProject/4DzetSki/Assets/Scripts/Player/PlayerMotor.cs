@@ -12,8 +12,10 @@ public class PlayerMotor:BaseMotor
 		//움직일때 방향, 속도를 넣어줌
 		MoveVector = state.ProcessMotion(MoveVector);
 		
+		MoveRotation = state.ProcessRotation(MoveVector);
 		//움직임
 		Move();
+		Rotate();
 	}
 
 	#region 1. 위 방향키
@@ -54,7 +56,8 @@ public class PlayerMotor:BaseMotor
 	{
 		if(Input.GetKey(KeyCode.RightArrow) == true) 
 		{
-			dir.x = 1;
+			dirX += 0.01f;
+			dir.x = dirX;
 		}
 		return dir;
 	}
@@ -66,7 +69,8 @@ public class PlayerMotor:BaseMotor
 	{
 		if(Input.GetKey(KeyCode.LeftArrow) == true) 
 		{
-			dir.x = -1;
+			testX -= 0.01f;
+			dir.x = testX;
 		}
 		return dir;
 	}
@@ -178,6 +182,8 @@ public class PlayerMotor:BaseMotor
 		MoveSpeed();
 		UpArrow(ref dir);
 		DownArrow(ref dir);
+		RightArrow(ref dir);
+		LeftArrow(ref dir);
 		NonKeyArrow(ref dir);
 		MoveGear();
 
