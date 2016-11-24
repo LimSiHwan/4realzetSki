@@ -22,8 +22,6 @@ public abstract class BaseMotor : MonoBehaviour
 		RightArrow,
 		LeftArrow
 	}
-	public float dirX = 0;
-	public float testX = 0;
 	protected KeyArrow keyArrow;
 	protected CharacterController controller;
 	protected BaseState state;

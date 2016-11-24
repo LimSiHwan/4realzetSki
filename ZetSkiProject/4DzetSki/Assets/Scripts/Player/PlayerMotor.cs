@@ -14,6 +14,7 @@ public class PlayerMotor:BaseMotor
 		
 		MoveRotation = state.ProcessRotation(MoveVector);
 		//움직임
+		Debug.Log("MoveVector = " + MoveVector.x);
 		Move();
 		Rotate();
 	}
@@ -23,8 +24,19 @@ public class PlayerMotor:BaseMotor
 	{
 		//위쪽
 		if(Input.GetKey(KeyCode.UpArrow) == true) 
-		{
-			dir.z = 1;
+		{ 
+			if(dir.x > 0)
+			{
+				dir.z = 1;
+				dir.x -= 0.01f;
+			}else if(dir.x < 0)
+			{
+				dir.z = 1;
+				dir.x += 0.01f;
+			}else
+			{
+				dir.z = 1;
+			}
 			keyArrow = KeyArrow.UpArrow;
 		}
 		return dir;
@@ -56,8 +68,7 @@ public class PlayerMotor:BaseMotor
 	{
 		if(Input.GetKey(KeyCode.RightArrow) == true) 
 		{
-			dirX += 0.01f;
-			dir.x = dirX;
+			dir.x += 0.01f;
 		}
 		return dir;
 	}
@@ -69,8 +80,7 @@ public class PlayerMotor:BaseMotor
 	{
 		if(Input.GetKey(KeyCode.LeftArrow) == true) 
 		{
-			testX -= 0.01f;
-			dir.x = testX;
+			dir.x -= 0.01f;
 		}
 		return dir;
 	}
@@ -79,6 +89,14 @@ public class PlayerMotor:BaseMotor
 	#region 5. 모든 방향키를 누르지 않을때
 	private Vector3 NonKeyArrow(ref Vector3 dir)
 	{
+		if(Input.GetKey(KeyCode.LeftArrow) == false)
+		{
+		}
+
+		if(Input.GetKey(KeyCode.RightArrow) == false)
+		{
+		}
+
 		if(Input.GetKey(KeyCode.DownArrow) == false
 			&& Input.GetKey(KeyCode.UpArrow) == false
 			&& Input.GetKey(KeyCode.RightArrow) == false
