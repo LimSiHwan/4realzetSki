@@ -2,18 +2,16 @@
 using System.Collections;
 using System;
 
-public class DrivingState:BaseState
+public class AutoDrivingState:BaseState
 {
 	public override Vector3 ProcessMotion(Vector3 input)
 	{
-		Debug.Log("Speed = " + baseMotor.Speed);
-		return input * baseMotor.Speed;
+		return input;
 	}
 	public override Quaternion ProcessRotation (Vector3 rotation)
 	{
-		return Quaternion.FromToRotation(Vector3.forward, rotation);
+		throw new NotImplementedException();
 	}
-
 	protected override void DriveStateChange()
 	{
 
