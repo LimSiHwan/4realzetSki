@@ -6,7 +6,6 @@ public class PlayerMotor:BaseMotor
 {
 	protected override void UpdateMotor()
 	{
-		Debug.Log(gameObject.transform.rotation);
 		//방향을 넣어줌
 		MoveVector = InputDir();
 		
@@ -73,7 +72,6 @@ public class PlayerMotor:BaseMotor
 	{
 		if(Input.GetKey(KeyCode.RightArrow) == true) 
 		{
-			dir = thisTransform.transform.forward;
 			if(keyArrow == KeyArrow.UpArrow)
 				keyArrow = KeyArrow.UpRightArrow;
 			else
