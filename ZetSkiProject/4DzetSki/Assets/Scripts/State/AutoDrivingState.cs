@@ -8,7 +8,7 @@ public class AutoDrivingState:BaseState
 	{
 		return input;
 	}
-	public override Quaternion ProcessRotation (Vector3 rotation)
+	public override Quaternion ProcessRotation (float leftRightRotation)
 	{
 		throw new NotImplementedException();
 	}

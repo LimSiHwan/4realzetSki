@@ -6,15 +6,18 @@ public class PlayerMotor:BaseMotor
 {
 	protected override void UpdateMotor()
 	{
+		Debug.Log(gameObject.transform.rotation);
 		//방향을 넣어줌
 		MoveVector = InputDir();
+		
+		//회전을 넣어줌
+		RotationMove = InputRotation();
 
 		//움직일때 방향, 속도를 넣어줌
 		MoveVector = state.ProcessMotion(MoveVector);
 		
-		MoveRotation = state.ProcessRotation(MoveVector);
+		MoveRotation = state.ProcessRotation(RotationMove);
 		//움직임
-		Debug.Log("MoveVector = " + MoveVector.x);
 		Move();
 		Rotate();
 	}
@@ -25,19 +28,13 @@ public class PlayerMotor:BaseMotor
 		//위쪽
 		if(Input.GetKey(KeyCode.UpArrow) == true) 
 		{ 
-			if(dir.x > 0)
+			if(gear == Gear.Back)
+				dir = -thisTransform.transform.forward;
+			else
 			{
-				dir.z = 1;
-				dir.x -= 0.01f;
-			}else if(dir.x < 0)
-			{
-				dir.z = 1;
-				dir.x += 0.01f;
-			}else
-			{
-				dir.z = 1;
+				dir = thisTransform.transform.forward;
+				keyArrow = KeyArrow.UpArrow;
 			}
-			keyArrow = KeyArrow.UpArrow;
 		}
 		return dir;
 	}
@@ -50,10 +47,10 @@ public class PlayerMotor:BaseMotor
 		{
 			if(gear == Gear.Back)
 			{
-				dir.z = -1;
+				dir = -thisTransform.transform.forward;
 			}else
 			{
-				dir.z = 1;
+				dir = thisTransform.transform.forward;
 				gear = Gear.Break;
 			}
 
@@ -64,23 +61,53 @@ public class PlayerMotor:BaseMotor
 	#endregion
 
 	#region 3. 오른쪽 방향키
+	private float RightArrow(float RotationMove)
+	{
+		if(Input.GetKey(KeyCode.RightArrow) == true) 
+		{
+			RotationMove += 1;
+		}
+		return RotationMove;
+	}
 	private Vector3 RightArrow(ref Vector3 dir)
 	{
 		if(Input.GetKey(KeyCode.RightArrow) == true) 
 		{
-			dir.x += 0.01f;
+			dir = thisTransform.transform.forward;
+			if(keyArrow == KeyArrow.UpArrow)
+				keyArrow = KeyArrow.UpRightArrow;
+			else
+			{
+				keyArrow = KeyArrow.RightArrow;
+				gear = Gear.N;
+			}
+				
 		}
 		return dir;
 	}
-
 	#endregion
 
 	#region 4. 왼쪽 방향키
+	private float LeftArrow(float RotationMove)
+	{
+		if(Input.GetKey(KeyCode.LeftArrow) == true) 
+		{
+			RotationMove -= 1;
+		}
+		return RotationMove;
+	}
 	private Vector3 LeftArrow(ref Vector3 dir)
 	{
 		if(Input.GetKey(KeyCode.LeftArrow) == true) 
 		{
-			dir.x -= 0.01f;
+			
+			if(keyArrow == KeyArrow.UpArrow)
+				keyArrow = KeyArrow.UpLeftArrow;
+			else
+			{
+				keyArrow = KeyArrow.LeftArrow;
+				gear = Gear.N;
+			}
 		}
 		return dir;
 	}
@@ -100,14 +127,16 @@ public class PlayerMotor:BaseMotor
 		if(Input.GetKey(KeyCode.DownArrow) == false
 			&& Input.GetKey(KeyCode.UpArrow) == false
 			&& Input.GetKey(KeyCode.RightArrow) == false
-			&& Input.GetKey(KeyCode.LeftArrow) == false)
+			&& Input.GetKey(KeyCode.LeftArrow) == false
+			)
 		{
 			if(keyArrow == KeyArrow.UpArrow)
 			{
-				dir.z = 1;
-			}else if(keyArrow == KeyArrow.DownArrow)
+				dir = thisTransform.transform.forward;
+			}
+			else if(keyArrow == KeyArrow.DownArrow)
 			{
-				dir.z = -1;
+				dir = -thisTransform.transform.forward;
 			}
 			gear = Gear.N;
 		}
@@ -144,10 +173,11 @@ public class PlayerMotor:BaseMotor
 	#region 7. 기어
 	private void MoveGear()
 	{
+		Debug.Log(keyArrow);
 		switch(gear)
 		{
 			case Gear.One:
-				if(keyArrow == KeyArrow.UpArrow)
+				if(keyArrow == KeyArrow.UpArrow || keyArrow == KeyArrow.UpLeftArrow || keyArrow == KeyArrow.UpRightArrow)
 				{
 					Speed += SpeedUp;
 					if(Speed >= MaxSpeed)
@@ -195,19 +225,34 @@ public class PlayerMotor:BaseMotor
 
 	private Vector3 InputDir()
 	{
-		Vector3 dir = Vector3.zero;
+		Vector3 dir = thisTransform.transform.forward;
 		
-		MoveSpeed();
-		UpArrow(ref dir);
-		DownArrow(ref dir);
-		RightArrow(ref dir);
-		LeftArrow(ref dir);
-		NonKeyArrow(ref dir);
+		//위로 방향키
+		dir = UpArrow(ref dir);
+		//아래로 방향키
+		dir = DownArrow(ref dir);
+
+		dir = RightArrow(ref dir);
+
+		dir = LeftArrow(ref dir);
+		//방향키 아무것도 누르지 않았을때
+		dir = NonKeyArrow(ref dir);
+		//기어
 		MoveGear();
+		//Z 속도증가, X 속도감소
+		MoveSpeed();
 
 		if(dir.magnitude > 1)
 			dir.Normalize();
 
 		return dir;
+	}
+
+	private float InputRotation()
+	{
+		RotationMove = RightArrow(RotationMove);
+		RotationMove = LeftArrow(RotationMove);
+		
+		return RotationMove;
 	}
 }

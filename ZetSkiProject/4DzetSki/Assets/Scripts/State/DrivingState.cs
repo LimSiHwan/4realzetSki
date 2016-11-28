@@ -9,9 +9,9 @@ public class DrivingState:BaseState
 		Debug.Log("Speed = " + baseMotor.Speed);
 		return input * baseMotor.Speed;
 	}
-	public override Quaternion ProcessRotation (Vector3 rotation)
+	public override Quaternion ProcessRotation (float leftRightRotation)
 	{
-		return Quaternion.FromToRotation(Vector3.forward, rotation);
+		return Quaternion.Euler(0, leftRightRotation, 0);
 	}
 
 	protected override void DriveStateChange()
