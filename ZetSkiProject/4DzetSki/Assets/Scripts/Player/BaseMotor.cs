@@ -20,12 +20,17 @@ public abstract class BaseMotor : MonoBehaviour
 		UpArrow,
 		DownArrow,
 		RightArrow,
-		LeftArrow
+		LeftArrow,
+		UpLeftArrow,
+		UpRightArrow,
+		DownLeftArrow,
+		DownRightArrow
 	}
 	protected KeyArrow keyArrow;
 	protected CharacterController controller;
 	protected BaseState state;
 	protected Transform thisTransform;
+	
 	
 	//최대 속력
 	private const float baseMaxSpeed = 10.0f;
@@ -41,7 +46,9 @@ public abstract class BaseMotor : MonoBehaviour
 	private float baseNonSpeed = 0.15f;
 	//제동력 브레이크
 	private float baseStopSpeed = 0.15f;
-	
+	//회전값
+	private float baseRotationMove = 0;
+
 	private float baseJump = 5.0f;
 	
 	public float Speed {get { return baseSpeed;} set { baseSpeed = value; }}
@@ -52,6 +59,7 @@ public abstract class BaseMotor : MonoBehaviour
 	protected float NonSpeed {get { return baseNonSpeed;} }
 	protected float StopSpeed {get {return baseStopSpeed; } }
 	protected Gear gear {set;get; }
+	protected float RotationMove {get {return baseRotationMove; }set {baseRotationMove = value; } }
 	public float Jump {get {return baseJump; } }
 
 	// 움직이는 방향

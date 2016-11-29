@@ -28,5 +28,5 @@ public abstract class BaseState : MonoBehaviour {
 
 	public abstract Vector3 ProcessMotion(Vector3 input);
 	protected abstract void DriveStateChange();
-	public abstract Quaternion ProcessRotation(Vector3 rotation);
+	public abstract Quaternion ProcessRotation(float leftRightRotation);
 }
