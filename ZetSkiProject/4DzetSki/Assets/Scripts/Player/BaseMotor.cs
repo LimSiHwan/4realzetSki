@@ -31,7 +31,6 @@ public abstract class BaseMotor : MonoBehaviour
 	protected BaseState state;
 	protected Transform thisTransform;
 	
-	
 	//최대 속력
 	private const float baseMaxSpeed = 10.0f;
 	//후진시 최대속력

@@ -4,8 +4,11 @@ using System;
 
 public class PlayerMotor:BaseMotor
 {
+
+	bool backChk;
 	protected override void UpdateMotor()
 	{
+		Debug.Log(backChk);
 		//방향을 넣어줌
 		MoveVector = InputDir();
 		
@@ -27,13 +30,13 @@ public class PlayerMotor:BaseMotor
 		//위쪽
 		if(Input.GetKey(KeyCode.UpArrow) == true) 
 		{ 
-			if(gear == Gear.Back)
+			if(gear == Gear.Back || backChk == true)
 				dir = -thisTransform.transform.forward;
 			else
 			{
 				dir = thisTransform.transform.forward;
-				keyArrow = KeyArrow.UpArrow;
 			}
+			keyArrow = KeyArrow.UpArrow;
 		}
 		return dir;
 	}
@@ -44,7 +47,9 @@ public class PlayerMotor:BaseMotor
 	{
 		if(Input.GetKey(KeyCode.DownArrow) == true) 
 		{
-			if(gear == Gear.Back)
+			keyArrow = KeyArrow.DownArrow;
+
+			if(gear == Gear.Back || backChk == true)
 			{
 				dir = -thisTransform.transform.forward;
 			}else
@@ -52,8 +57,6 @@ public class PlayerMotor:BaseMotor
 				dir = thisTransform.transform.forward;
 				gear = Gear.Break;
 			}
-
-			keyArrow = KeyArrow.DownArrow;
 		}
 		return dir;
 	}
@@ -74,12 +77,19 @@ public class PlayerMotor:BaseMotor
 		{
 			if(keyArrow == KeyArrow.UpArrow)
 				keyArrow = KeyArrow.UpRightArrow;
+			else if(keyArrow == KeyArrow.DownArrow)
+				keyArrow = KeyArrow.DownRightArrow;
 			else
 			{
 				keyArrow = KeyArrow.RightArrow;
 				gear = Gear.N;
 			}
-				
+
+			if(backChk == true)
+				dir = -thisTransform.transform.forward;
+			else
+				dir = thisTransform.transform.forward;
+
 		}
 		return dir;
 	}
@@ -98,14 +108,20 @@ public class PlayerMotor:BaseMotor
 	{
 		if(Input.GetKey(KeyCode.LeftArrow) == true) 
 		{
-			
 			if(keyArrow == KeyArrow.UpArrow)
 				keyArrow = KeyArrow.UpLeftArrow;
+			else if(keyArrow == KeyArrow.DownArrow)
+				keyArrow = KeyArrow.DownLeftArrow;
 			else
 			{
 				keyArrow = KeyArrow.LeftArrow;
 				gear = Gear.N;
 			}
+
+			if(backChk == true)
+				dir = -thisTransform.transform.forward;
+			else
+				dir = thisTransform.transform.forward;
 		}
 		return dir;
 	}
@@ -172,11 +188,13 @@ public class PlayerMotor:BaseMotor
 	private void MoveGear()
 	{
 		Debug.Log(keyArrow);
+		Debug.Log(gear);
 		switch(gear)
 		{
 			case Gear.One:
 				if(keyArrow == KeyArrow.UpArrow || keyArrow == KeyArrow.UpLeftArrow || keyArrow == KeyArrow.UpRightArrow)
 				{
+					backChk = false;
 					Speed += SpeedUp;
 					if(Speed >= MaxSpeed)
 						Speed = MaxSpeed;
@@ -192,8 +210,9 @@ public class PlayerMotor:BaseMotor
 				break;
 
 			case Gear.Back:
-				if(keyArrow == KeyArrow.DownArrow)
+				if(keyArrow == KeyArrow.DownArrow || keyArrow == KeyArrow.DownLeftArrow || keyArrow == KeyArrow.DownRightArrow)
 				{
+					backChk = true;
 					Speed += SpeedDown;
 					if(Speed >= BackMaxSpeed)
 						Speed = BackMaxSpeed;
@@ -204,6 +223,7 @@ public class PlayerMotor:BaseMotor
 				Speed -= StopSpeed;
 				if(Speed < 0)
 				{
+					backChk = false;
 					Speed = 0;
 					gear = Gear.Back;
 				}
@@ -213,6 +233,7 @@ public class PlayerMotor:BaseMotor
 				Speed -= NonSpeed;
 				if(Speed <= 0)
 				{
+					backChk = false;
 					Speed = 0;
 					gear = Gear.Back;
 				}
