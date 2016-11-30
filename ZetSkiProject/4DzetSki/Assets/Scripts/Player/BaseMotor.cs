@@ -26,6 +26,7 @@ public abstract class BaseMotor : MonoBehaviour
 		DownLeftArrow,
 		DownRightArrow
 	}
+	protected Rigidbody rbody;
 	protected KeyArrow keyArrow;
 	protected CharacterController controller;
 	protected BaseState state;
@@ -72,6 +73,7 @@ public abstract class BaseMotor : MonoBehaviour
 	{
 		gear = Gear.N;
 		keyArrow = KeyArrow.None;
+		rbody = gameObject.GetComponent<Rigidbody>();
 		controller = gameObject.AddComponent<CharacterController>();
 		thisTransform = transform;
 
@@ -87,11 +89,13 @@ public abstract class BaseMotor : MonoBehaviour
 	
 	protected virtual void Move()
 	{
-		controller.Move(MoveVector * Time.deltaTime);
+		//controller.Move(MoveVector * Time.deltaTime);
+		rbody.AddForce(transform.forward * baseSpeed*Time.deltaTime);
 	}
 	protected virtual void Rotate()
 	{
-		thisTransform.rotation = MoveRotation;
+		//thisTransform.rotation = MoveRotation;
+		rbody.AddTorque(0f, MoveVector.x*RotationMove*Time.deltaTime,0f);
 	}
 
 	public void ChangeState(string stateName)
