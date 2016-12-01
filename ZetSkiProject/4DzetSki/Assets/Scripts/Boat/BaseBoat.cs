@@ -11,9 +11,25 @@ public abstract class BaseBoat : MonoBehaviour {
 		BACK
 	}
 
-	protected Rigidbody rbody;
-	protected Transform thisTransform;
-	protected CharacterController controller;
+	public Rigidbody rbody;
+	public Transform thisTransform;
+	protected BaseBoatState baseBoatState;
+	BoxCollider boxCol;
+	
+	//protected CharacterController controller;
+	//protected CharacterController controller;
+	private float baseGravity = 10.0f;
+	private float terminalVelocity = 30.0f;
+	private float groundRayDistance = 1.0f;
+	private float groundRayInnerOffset = 0.1f;
+
+	public float Gravity {get { return baseGravity;} }
+	public float TerminalVelocity {get { return terminalVelocity;} }
+
+
+	public float baseTransformY;
+	public float baseTempTransformY;
+	public float VerticalVelocity {get;set; }
 	//최대 속력
 	private float baseMaxSpeed = 1500.0f;
 	//후진시 최대 속력
@@ -21,7 +37,7 @@ public abstract class BaseBoat : MonoBehaviour {
 	//속력
 	private float baseSpeed = 0.0f;
 	//회전 속도
-	private float baseTurnSpeed = 100.0f;
+	private float baseTurnSpeed = 60;
 	//가속력
 	private float baseAccelForce = 5.0f;
 	//제동력
@@ -33,8 +49,8 @@ public abstract class BaseBoat : MonoBehaviour {
 
 	protected float MaxSpeed {get {return baseMaxSpeed; } }
 	protected float BackMaxSpeed {get { return baseBackMaxSpeed;} }
-	protected float Speed {get {return baseSpeed; }set { baseSpeed = value;} }
-	protected float TurnSpeed {get {return baseTurnSpeed; } }
+	public float Speed {get {return baseSpeed; }set { baseSpeed = value;} }
+	public float TurnSpeed {get {return baseTurnSpeed; } }
 	protected float AccelForce {get {return baseAccelForce; } }
 	protected float BreakForce {get {return baseBreakForce; } }
 	protected float BackAccelForce {get {return baseBackAccelForce; } }
@@ -48,13 +64,19 @@ public abstract class BaseBoat : MonoBehaviour {
 
 	protected abstract void UpdateBoat();
 
-	void Start ()
+	protected virtual void Start ()
 	{
+		Debug.Log("d");
 		BackChk = false;
 		boatGear = BoatGear.N;
-		controller = gameObject.AddComponent<CharacterController>();
+		//controller = gameObject.AddComponent<CharacterController>();
 		rbody = gameObject.GetComponent<Rigidbody>();
 		thisTransform = gameObject.GetComponent<Transform>();
+		baseTransformY = thisTransform.transform.position.y;
+		baseTempTransformY = 0;
+		baseBoatState = gameObject.AddComponent<DrivingBoatState>();
+		baseBoatState.Construct();
+		boxCol = gameObject.GetComponent<BoxCollider>();
 	}
 	
 	void Update ()
@@ -64,13 +86,64 @@ public abstract class BaseBoat : MonoBehaviour {
 
 	protected virtual void Move()
 	{
-		//rbody.AddTorque(0f, h*turnSpeed*Time.deltaTime,0f);
-		//rbody.AddForce(transform.forward * speed*v*Time.deltaTime);
-		rbody.AddForce(thisTransform.transform.forward * Speed * v * Time.deltaTime);
-		//controller.Move(thisTransform.transform.forward * Speed * v * Time.deltaTime);
+		rbody.AddForce(thisTransform.transform.forward * v);
+		//controller.Move(thisTransform.transform.forward * v);
 	}
 	protected virtual void Turn()
 	{
-		rbody.AddTorque(0f, h * TurnSpeed * Time.deltaTime, 0f);
+		rbody.AddTorque(0f,h,0f);
+	}
+	public void ChangeState(string stateName)
+	{
+		System.Type t = System.Type.GetType(stateName);
+
+		baseBoatState.Destruct();
+		baseBoatState = gameObject.AddComponent(t) as BaseBoatState;
+		baseBoatState.Construct();
+
+	}
+	public virtual bool Grounded()
+	{
+		RaycastHit hit;
+		Vector3 ray;
+
+		float yRay = (boxCol.bounds.center.y - boxCol.bounds.extents.y) + 0.3f,
+			centerX = boxCol.bounds.center.x,
+			centerZ = boxCol.bounds.center.z,
+			extentX = boxCol.bounds.extents.x - groundRayInnerOffset,
+			extentZ = boxCol.bounds.extents.z - groundRayInnerOffset;
+
+		ray = new Vector3(centerX, yRay, centerZ);
+		Debug.DrawRay(ray,Vector3.down, Color.green);
+		if(Physics.Raycast(ray, Vector3.down, out hit, groundRayDistance))
+		{
+			return true;
+		}
+
+		ray = new Vector3(centerX + extentX, yRay, centerZ + extentZ);
+		Debug.DrawRay(ray,Vector3.down, Color.green);
+		if(Physics.Raycast(ray, Vector3.down, out hit, groundRayDistance))
+		{
+			return true;
+		}
+		ray = new Vector3(centerX - extentX, yRay, centerZ + extentZ);
+		Debug.DrawRay(ray,Vector3.down, Color.green);
+		if(Physics.Raycast(ray, Vector3.down, out hit, groundRayDistance))
+		{
+			return true;
+		}
+		ray = new Vector3(centerX - extentX, yRay, centerZ - extentZ);
+		Debug.DrawRay(ray,Vector3.down, Color.green);
+		if(Physics.Raycast(ray, Vector3.down, out hit, groundRayDistance))
+		{
+			return true;
+		}
+		ray = new Vector3(centerX + extentX, yRay, centerZ - extentZ);
+		Debug.DrawRay(ray,Vector3.down, Color.green);
+		if(Physics.Raycast(ray, Vector3.down, out hit, groundRayDistance))
+		{
+			return true;
+		}
+		return false;
 	}
 }

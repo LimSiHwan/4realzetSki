@@ -7,10 +7,14 @@ public class ControllerBoat:BaseBoat
 	protected override void UpdateBoat ()
 	{
 		InputDirection();
-		Debug.Log(v);
 		Debug.Log("Speed = " + Speed);
+		v = baseBoatState.ProcessMotion(v);
+		h = baseBoatState.ProcessRotation(h);
+
+		//Grounded();
 		Move();
 		Turn();
+		baseBoatState.Transition();
 	}
 	#region 1. 가속력, 제동력
 	private void AccelAndBreak()
@@ -35,6 +39,7 @@ public class ControllerBoat:BaseBoat
 	}
 	#endregion
 
+	#region 2. 기어
 	private void BoatGearState(BoatGear gear)
 	{
 		switch(gear)
@@ -42,11 +47,15 @@ public class ControllerBoat:BaseBoat
 			case BoatGear.ACCEL:
 				boatGear = BoatGear.ACCEL;
 				Speed += AccelForce;
+				if(Speed >= MaxSpeed)
+					Speed = MaxSpeed;
 				break;
 
 			case BoatGear.BACK:
 				v = -1.0f;
 				Speed += BackAccelForce;
+				if(Speed >= BackMaxSpeed)
+					Speed = BackMaxSpeed;
 				break;
 
 			case BoatGear.BREAK:
@@ -63,7 +72,7 @@ public class ControllerBoat:BaseBoat
 				break;
 		}
 	}
-
+	#endregion
 	private void InputDirection()
 	{
 		h = Input.GetAxis("Horizontal");
