@@ -15,20 +15,17 @@ public abstract class BaseBoat : MonoBehaviour {
 	public Transform thisTransform;
 	protected BaseBoatState baseBoatState;
 	BoxCollider boxCol;
-	
-	//protected CharacterController controller;
-	//protected CharacterController controller;
-	private float baseGravity = 10.0f;
+	public Vector3 tempTransform;
+	public Vector3 tempFrist;
+	private float baseGravity = 30.0f;
 	private float terminalVelocity = 30.0f;
-	private float groundRayDistance = 1.0f;
+	private float groundRayDistance = 2f;
 	private float groundRayInnerOffset = 0.1f;
 
 	public float Gravity {get { return baseGravity;} }
 	public float TerminalVelocity {get { return terminalVelocity;} }
 
-
-	public float baseTransformY;
-	public float baseTempTransformY;
+	
 	public float VerticalVelocity {get;set; }
 	//최대 속력
 	private float baseMaxSpeed = 1500.0f;
@@ -57,23 +54,21 @@ public abstract class BaseBoat : MonoBehaviour {
 	protected float NoneBreakForce {get {return baseNoneBreakForce; } }
 	protected BoatGear boatGear {get;set; }
 	protected bool BackChk {get; set; }
+
 	protected Vector3 MoveVecter {get;set; }
 
-	protected float h;
-	protected float v;
-
+	protected float v {get; set; }
+	protected float h {get; set; }
 	protected abstract void UpdateBoat();
 
 	protected virtual void Start ()
 	{
-		Debug.Log("d");
 		BackChk = false;
 		boatGear = BoatGear.N;
 		//controller = gameObject.AddComponent<CharacterController>();
 		rbody = gameObject.GetComponent<Rigidbody>();
 		thisTransform = gameObject.GetComponent<Transform>();
-		baseTransformY = thisTransform.transform.position.y;
-		baseTempTransformY = 0;
+		tempTransform = thisTransform.transform.position;
 		baseBoatState = gameObject.AddComponent<DrivingBoatState>();
 		baseBoatState.Construct();
 		boxCol = gameObject.GetComponent<BoxCollider>();

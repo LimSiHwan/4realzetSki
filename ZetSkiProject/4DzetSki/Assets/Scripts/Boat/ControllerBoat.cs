@@ -10,11 +10,11 @@ public class ControllerBoat:BaseBoat
 		Debug.Log("Speed = " + Speed);
 		v = baseBoatState.ProcessMotion(v);
 		h = baseBoatState.ProcessRotation(h);
-
+	
 		//Grounded();
+		baseBoatState.Transition();
 		Move();
 		Turn();
-		baseBoatState.Transition();
 	}
 	#region 1. 가속력, 제동력
 	private void AccelAndBreak()
@@ -77,6 +77,8 @@ public class ControllerBoat:BaseBoat
 	{
 		h = Input.GetAxis("Horizontal");
 		v = Input.GetAxis("Vertical");
+
 		AccelAndBreak();
+		
 	}
 }
