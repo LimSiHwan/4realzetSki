@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class BaseCamera : MonoBehaviour {
-
+	//1.7, 0, 5
 	public Transform target;
 	public float dist = 10.0f;
 	public float height = 5.0f;
