@@ -29,7 +29,7 @@ public abstract class BaseBoatState : MonoBehaviour {
 	}
 	protected void ApplyPositionUp()
 	{
-		baseBoat.rbody.useGravity = false;
+		//baseBoat.rbody.useGravity = false;
 		Debug.Log("아아아아ㅣ이");
 		baseBoat.thisTransform.transform.position += new Vector3(0,0.1f,0);
 		if(baseBoat.thisTransform.transform.position.y >= 42)
@@ -39,7 +39,7 @@ public abstract class BaseBoatState : MonoBehaviour {
 	}
 	protected float ApplySpeed(float v, float Speed)
 	{
-		baseBoat.rbody.useGravity = false;
+		//baseBoat.rbody.useGravity = false;
 		return v * Speed * Time.deltaTime;
 	}
 
@@ -58,7 +58,7 @@ public abstract class BaseBoatState : MonoBehaviour {
 		baseBoat.thisTransform.transform.position.Set(1,2,3);
 		Debug.Log(baseBoat.thisTransform.transform.position);*/
 		
-		baseBoat.rbody.useGravity = true;
+		//baseBoat.rbody.useGravity = true;
 		if(baseBoat.thisTransform.transform.position.y < 42)
 		{
 			UpChk = true;
