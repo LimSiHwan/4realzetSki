@@ -12,7 +12,7 @@ public class ControllerBoat:BaseBoat
 		h = baseBoatState.ProcessRotation(h);
 	
 		//Grounded();
-		baseBoatState.Transition();
+		//baseBoatState.Transition();
 		Move();
 		Turn();
 	}

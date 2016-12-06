@@ -19,9 +19,24 @@ public class AQUAS_Reflection : MonoBehaviour
 	
 	private static bool s_InsideRendering = false;
 
-	public void OnWillRenderObject()
+    public bool ignoreOcclusionCulling;
+
+#if UNITY_5_3 || UNITY_5_4 || UNITY_5_5
+    public bool disableInEditMode;
+#endif
+
+    public void OnWillRenderObject()
 	{
-		if( !enabled || !GetComponent<Renderer>() || !GetComponent<Renderer>().sharedMaterial || !GetComponent<Renderer>().enabled )
+
+#if UNITY_5_3 || UNITY_5_4 || UNITY_5_5
+        if (disableInEditMode && !Application.isPlaying)
+        {
+            OnDisable();
+            return;
+        }
+#endif
+
+        if ( !enabled || !GetComponent<Renderer>() || !GetComponent<Renderer>().sharedMaterial || !GetComponent<Renderer>().enabled )
 			return;
 		
 		Camera cam = Camera.current;
@@ -51,8 +66,18 @@ public class AQUAS_Reflection : MonoBehaviour
 		// Reflect camera around reflection plane
 		float d = -Vector3.Dot (normal, pos) - m_ClipPlaneOffset;
 		Vector4 reflectionPlane = new Vector4 (normal.x, normal.y, normal.z, d);
-		
-		Matrix4x4 reflection = Matrix4x4.zero;
+
+        if (ignoreOcclusionCulling)
+        {
+            reflectionCamera.useOcclusionCulling = false;
+        }
+        else
+        {
+            reflectionCamera.useOcclusionCulling = true;
+        }
+        
+
+        Matrix4x4 reflection = Matrix4x4.zero;
 		CalculateReflectionMatrix (ref reflection, reflectionPlane);
 		Vector3 oldpos = cam.transform.position;
 		Vector3 newpos = reflection.MultiplyPoint( oldpos );

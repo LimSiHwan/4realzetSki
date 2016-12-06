@@ -1,5 +1,5 @@
 Thank you for purchasing AQUAS!
-The current version is 1.3!
+The current version is 1.3.1!
 
 For video tutorials and the latest manual please visit the following link:
 
