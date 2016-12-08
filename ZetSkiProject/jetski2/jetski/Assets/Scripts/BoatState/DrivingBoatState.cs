@@ -15,11 +15,11 @@ public class DrivingBoatState:BaseBoatState
 		v = ApplySpeed(v, baseBoat.Speed);
 		return v;
 	}
-	public override void Transition()
+	/*public override void Transition()
 	{
 		if(!baseBoat.Grounded())
 		{
 			baseBoat.ChangeState("FallingBoatState");
 		}
-	}
+	}*/
 }

@@ -9,14 +9,15 @@ public class UpUpBoatState:BaseBoatState
 
 		v = ApplySpeed(v, baseBoat.Speed);
 
-		ApplyPositionUp();
+		//ApplyPositionUp();
 		return v;
 	}
+	/*
 	public override void Transition()
 	{
 		if(UpUpChk)
 		{
 			baseBoat.ChangeState("DrivingBoatState");
 		}
-	}
+	}*/
 }

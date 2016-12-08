@@ -47,6 +47,7 @@ public class ControllerBoat:BaseBoat
 			case BoatGear.ACCEL:
 				boatGear = BoatGear.ACCEL;
 				Speed += AccelForce;
+				TurnSpeed = MaxTurnSpeed;
 				if(Speed >= MaxSpeed)
 					Speed = MaxSpeed;
 				break;
@@ -54,6 +55,7 @@ public class ControllerBoat:BaseBoat
 			case BoatGear.BACK:
 				v = -1.0f;
 				Speed += BackAccelForce;
+				TurnSpeed = MaxTurnSpeed;
 				if(Speed >= BackMaxSpeed)
 					Speed = BackMaxSpeed;
 				break;
@@ -61,14 +63,22 @@ public class ControllerBoat:BaseBoat
 			case BoatGear.BREAK:
 				v = 1.0f;
 				Speed -= BreakForce;
+				TurnSpeed = MaxTurnSpeed;
 				if(Speed < 0)
+				{
 					boatGear = BoatGear.BACK;
+					TurnSpeed = 0;
+				}
 				break;
 
 			case BoatGear.N:
 				Speed -= NoneBreakForce;
+				TurnSpeed = MaxTurnSpeed;
 				if(Speed < 0)
+				{
 					Speed = 0;
+					TurnSpeed = 0;
+				}
 				break;
 		}
 	}

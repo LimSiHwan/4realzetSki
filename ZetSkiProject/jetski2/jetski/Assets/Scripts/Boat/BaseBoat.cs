@@ -14,9 +14,6 @@ public abstract class BaseBoat : MonoBehaviour {
 	public Rigidbody rbody;
 	public Transform thisTransform;
 	protected BaseBoatState baseBoatState;
-	BoxCollider boxCol;
-	public Vector3 tempTransform;
-	public Vector3 tempFrist;
 	private float baseGravity = 30.0f;
 	private float terminalVelocity = 30.0f;
 	private float groundRayDistance = 2f;
@@ -28,13 +25,15 @@ public abstract class BaseBoat : MonoBehaviour {
 	
 	public float VerticalVelocity {get;set; }
 	//최대 속력
-	private float baseMaxSpeed = 1500.0f;
+	private const float baseMaxSpeed = 1500.0f;
 	//후진시 최대 속력
-	private float baseBackMaxSpeed = 600.0f;
+	private const float baseBackMaxSpeed = 600.0f;
+	//최대 턴 속도
+	private const float baseMaxTurnSpeed = 30.0f;
 	//속력
 	private float baseSpeed = 0.0f;
 	//회전 속도
-	private float baseTurnSpeed = 60;
+	private float baseTurnSpeed = 0;
 	//가속력
 	private float baseAccelForce = 5.0f;
 	//제동력
@@ -45,9 +44,10 @@ public abstract class BaseBoat : MonoBehaviour {
 	private float baseNoneBreakForce = 10.0f;
 
 	protected float MaxSpeed {get {return baseMaxSpeed; } }
+	protected float MaxTurnSpeed {get { return baseMaxTurnSpeed;} }
 	protected float BackMaxSpeed {get { return baseBackMaxSpeed;} }
 	public float Speed {get {return baseSpeed; }set { baseSpeed = value;} }
-	public float TurnSpeed {get {return baseTurnSpeed; } }
+	public float TurnSpeed {get {return baseTurnSpeed; } set {baseTurnSpeed = value; } }
 	protected float AccelForce {get {return baseAccelForce; } }
 	protected float BreakForce {get {return baseBreakForce; } }
 	protected float BackAccelForce {get {return baseBackAccelForce; } }
@@ -68,10 +68,8 @@ public abstract class BaseBoat : MonoBehaviour {
 		//controller = gameObject.AddComponent<CharacterController>();
 		rbody = gameObject.GetComponent<Rigidbody>();
 		thisTransform = gameObject.GetComponent<Transform>();
-		tempTransform = thisTransform.transform.position;
 		baseBoatState = gameObject.AddComponent<DrivingBoatState>();
 		baseBoatState.Construct();
-		boxCol = gameObject.GetComponent<BoxCollider>();
 	}
 	
 	void Update ()
@@ -96,49 +94,5 @@ public abstract class BaseBoat : MonoBehaviour {
 		baseBoatState = gameObject.AddComponent(t) as BaseBoatState;
 		baseBoatState.Construct();
 
-	}
-	public virtual bool Grounded()
-	{
-		RaycastHit hit;
-		Vector3 ray;
-
-		float yRay = (boxCol.bounds.center.y - boxCol.bounds.extents.y) + 0.3f,
-			centerX = boxCol.bounds.center.x,
-			centerZ = boxCol.bounds.center.z,
-			extentX = boxCol.bounds.extents.x - groundRayInnerOffset,
-			extentZ = boxCol.bounds.extents.z - groundRayInnerOffset;
-
-		ray = new Vector3(centerX, yRay, centerZ);
-		Debug.DrawRay(ray,Vector3.down, Color.green);
-		if(Physics.Raycast(ray, Vector3.down, out hit, groundRayDistance))
-		{
-			return true;
-		}
-
-		ray = new Vector3(centerX + extentX, yRay, centerZ + extentZ);
-		Debug.DrawRay(ray,Vector3.down, Color.green);
-		if(Physics.Raycast(ray, Vector3.down, out hit, groundRayDistance))
-		{
-			return true;
-		}
-		ray = new Vector3(centerX - extentX, yRay, centerZ + extentZ);
-		Debug.DrawRay(ray,Vector3.down, Color.green);
-		if(Physics.Raycast(ray, Vector3.down, out hit, groundRayDistance))
-		{
-			return true;
-		}
-		ray = new Vector3(centerX - extentX, yRay, centerZ - extentZ);
-		Debug.DrawRay(ray,Vector3.down, Color.green);
-		if(Physics.Raycast(ray, Vector3.down, out hit, groundRayDistance))
-		{
-			return true;
-		}
-		ray = new Vector3(centerX + extentX, yRay, centerZ - extentZ);
-		Debug.DrawRay(ray,Vector3.down, Color.green);
-		if(Physics.Raycast(ray, Vector3.down, out hit, groundRayDistance))
-		{
-			return true;
-		}
-		return false;
 	}
 }

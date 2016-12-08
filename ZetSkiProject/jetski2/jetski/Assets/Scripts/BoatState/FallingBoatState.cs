@@ -19,11 +19,12 @@ public class FallingBoatState:BaseBoatState
 
 		return v;
 	}
+	/*
 	public override void Transition()
 	{
 		if(baseBoat.Grounded())
 		{
 			baseBoat.ChangeState("DrivingBoatState");
 		}
-	}
+	}*/
 }
