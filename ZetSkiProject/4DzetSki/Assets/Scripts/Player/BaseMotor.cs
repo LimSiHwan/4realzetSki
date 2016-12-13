@@ -89,13 +89,13 @@ public abstract class BaseMotor : MonoBehaviour
 	
 	protected virtual void Move()
 	{
-		//controller.Move(MoveVector * Time.deltaTime);
-		rbody.AddForce(transform.forward * baseSpeed*Time.deltaTime);
+		controller.Move(MoveVector * Time.deltaTime);
+		//rbody.AddForce(transform.forward * baseSpeed*Time.deltaTime);
 	}
 	protected virtual void Rotate()
 	{
-		//thisTransform.rotation = MoveRotation;
-		rbody.AddTorque(0f, MoveVector.x*RotationMove*Time.deltaTime,0f);
+		thisTransform.rotation = MoveRotation;
+		//rbody.AddTorque(0f, MoveVector.x*RotationMove*Time.deltaTime,0f);
 	}
 
 	public void ChangeState(string stateName)
