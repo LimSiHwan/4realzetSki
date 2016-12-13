@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/Pirates Island/Demo/Demo1_sunset.unity
+  isLoaded: 1
+  isActive: 1

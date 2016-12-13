@@ -1,0 +1,44 @@
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 21.21.13.7570]
+    Renderer: NVIDIA GeForce GTX 750 Ti
+    Vendor:   NVIDIA
+    VRAM:     2016 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 DF24=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+Initialize engine version: 3.5.6f4
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\win11\Desktop\jetski2\맵페인터\FlowMapPainter-0.9.2-win32\FlowMapPainter_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\win11\Desktop\jetski2\맵페인터\FlowMapPainter-0.9.2-win32\FlowMapPainter_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\win11\Desktop\jetski2\맵페인터\FlowMapPainter-0.9.2-win32\FlowMapPainter_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\win11\Desktop\jetski2\맵페인터\FlowMapPainter-0.9.2-win32\FlowMapPainter_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+- Completed reload, in  0.066 seconds
+Platform assembly: C:\Users\win11\Desktop\jetski2\맵페인터\FlowMapPainter-0.9.2-win32\FlowMapPainter_Data\Managed\System.dll (this message is harmless)
+FormatException: Input string was not in the correct format
+  at System.Int32.Parse (System.String s) [0x00000] in <filename unknown>:0 
+  at VertexPaintRealTime+<VersionCheck>c__Iterator1.MoveNext () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+IsolatedStorageException: Could not find file "C:\Users\win11\Desktop\jetski2\ZetSkiProject\jetski2\jetski\Assets\RiverReferences\Ref".
+  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, Boolean anonymous, FileOptions options) [0x00000] in <filename unknown>:0 
+  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share) [0x00000] in <filename unknown>:0 
+  at System.IO.File.OpenRead (System.String path) [0x00000] in <filename unknown>:0 
+  at System.IO.File.ReadAllBytes (System.String path) [0x00000] in <filename unknown>:0 
+  at VertexPaintRealTime.LoadUserTexture (System.String texPath) [0x00000] in <filename unknown>:0 
+  at VertexPaintRealTime.OnGUI () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+IsolatedStorageException: Could not find file "C:\Users\win11\Desktop\jetski2\ZetSkiProject\jetski2\jetski\Assets\RiverReferences\Ref".
+  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, Boolean anonymous, FileOptions options) [0x00000] in <filename unknown>:0 
+  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share) [0x00000] in <filename unknown>:0 
+  at System.IO.File.OpenRead (System.String path) [0x00000] in <filename unknown>:0 
+  at System.IO.File.ReadAllBytes (System.String path) [0x00000] in <filename unknown>:0 
+  at VertexPaintRealTime.LoadUserTexture (System.String texPath) [0x00000] in <filename unknown>:0 
+  at VertexPaintRealTime.OnGUI () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
