@@ -22,9 +22,4 @@ public class MapGeneration : MonoBehaviour {
 			MapInstace.transform.position = mapVector;
 		}
 	}
-
-	void Update ()
-	{
-	
-	}
 }

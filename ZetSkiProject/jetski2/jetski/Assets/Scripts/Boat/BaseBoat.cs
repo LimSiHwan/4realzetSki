@@ -14,6 +14,7 @@ public abstract class BaseBoat : MonoBehaviour {
 	public Rigidbody rbody;
 	public Transform thisTransform;
 	protected BaseBoatState baseBoatState;
+	protected GameObject baseHandle;
 	private float baseGravity = 30.0f;
 	private float terminalVelocity = 30.0f;
 	private float groundRayDistance = 2f;
@@ -42,6 +43,8 @@ public abstract class BaseBoat : MonoBehaviour {
 	private float baseBackAccelForce = 3.0f;
 	//가만히 있을 때 제동력
 	private float baseNoneBreakForce = 10.0f;
+	//핸들 꺽는각
+	private const float baseMaxHandle = 1.0f;
 
 	protected float MaxSpeed {get {return baseMaxSpeed; } }
 	protected float MaxTurnSpeed {get { return baseMaxTurnSpeed;} }
@@ -56,6 +59,8 @@ public abstract class BaseBoat : MonoBehaviour {
 	protected bool BackChk {get; set; }
 
 	protected Vector3 MoveVecter {get;set; }
+	private Vector3 MoveHandle;
+	
 
 	protected float v {get; set; }
 	protected float h {get; set; }
@@ -70,6 +75,8 @@ public abstract class BaseBoat : MonoBehaviour {
 		thisTransform = gameObject.GetComponent<Transform>();
 		baseBoatState = gameObject.AddComponent<DrivingBoatState>();
 		baseBoatState.Construct();
+		baseHandle = transform.FindChild("jetskihandle").gameObject;
+		MoveHandle = Vector3.zero;
 	}
 	
 	void Update ()
@@ -86,6 +93,40 @@ public abstract class BaseBoat : MonoBehaviour {
 	{
 		rbody.AddTorque(0f,h,0f);
 	}
+
+	protected virtual void TurnHandle()
+	{
+		if(h > 0)
+		{
+			MoveHandle.z += baseMaxHandle;
+			if(MoveHandle.z >= 20)
+			{
+				MoveHandle.z = 20;
+			}
+		}else if(h < 0)
+		{
+			MoveHandle.z -= baseMaxHandle;
+			if(MoveHandle.z <= -20)
+			{
+				MoveHandle.z = -20;
+			}
+		}else
+		{
+			if(MoveHandle.z > 0)
+			{
+				MoveHandle.z -= baseMaxHandle;
+				if(MoveHandle.z <= 0)
+					MoveHandle.z = 0;
+			}else if(MoveHandle.z < 0)
+			{
+				MoveHandle.z += baseMaxHandle;
+				if(MoveHandle.z >= 0)
+					MoveHandle.z = 0;
+			}
+		}
+		baseHandle.transform.localEulerAngles = new Vector3(270, 0, 270 + MoveHandle.z);
+	}
+
 	public void ChangeState(string stateName)
 	{
 		System.Type t = System.Type.GetType(stateName);
