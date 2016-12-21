@@ -26,7 +26,7 @@ public abstract class BaseBoat : MonoBehaviour {
 	
 	public float VerticalVelocity {get;set; }
 	//최대 속력
-	private const float baseMaxSpeed = 1500.0f;
+	private const float baseMaxSpeed = 1000.0f;
 	//후진시 최대 속력
 	private const float baseBackMaxSpeed = 600.0f;
 	//최대 턴 속도
