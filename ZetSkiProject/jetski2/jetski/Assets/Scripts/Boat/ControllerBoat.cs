@@ -32,10 +32,6 @@ public class ControllerBoat:BaseBoat
 		{
 			Debug.Log("L1");
 		}
-		if(Input.GetKey(KeyCode.Joystick1Button5))
-		{
-			Debug.Log("R1");
-		}
 		if(Input.GetKey(KeyCode.Joystick1Button6))
 		{
 			Debug.Log("6");
@@ -43,6 +39,38 @@ public class ControllerBoat:BaseBoat
 		if(Input.GetKey(KeyCode.Joystick1Button7))
 		{
 			Debug.Log("7");
+		}
+		if(Input.GetKey(KeyCode.Joystick1Button8))
+		{
+			Debug.Log("8");
+		}
+		if(Input.GetKey(KeyCode.Joystick1Button9))
+		{
+			Debug.Log("9");
+		}
+		if(Input.GetKey(KeyCode.Joystick1Button10))
+		{
+			Debug.Log("10");
+		}
+		if(Input.GetKey(KeyCode.Joystick1Button13))
+		{
+			Debug.Log("13");
+		}
+		if(Input.GetKey(KeyCode.Joystick1Button14))
+		{
+			Debug.Log("14");
+		}
+		if(Input.GetKey(KeyCode.Joystick1Button15))
+		{
+			Debug.Log("15");
+		}
+		if(Input.GetKey(KeyCode.Joystick1Button16))
+		{
+			Debug.Log("16");
+		}
+		if(Input.GetKey(KeyCode.Joystick1Button17))
+		{
+			Debug.Log("17");
 		}
 		if(Input.GetKey(KeyCode.Joystick1Button12))
 		{
@@ -52,6 +80,7 @@ public class ControllerBoat:BaseBoat
 		Move();
 		Turn();
 	}
+	/*
 	#region 1. 가속력, 제동력
 	private void AccelAndBreak()
 	{
@@ -83,7 +112,7 @@ public class ControllerBoat:BaseBoat
 		}
 	}
 	#endregion
-
+	*/
 	#region 2. 기어
 	private void BoatGearState(BoatGear gear)
 	{
@@ -91,6 +120,7 @@ public class ControllerBoat:BaseBoat
 		{
 			case BoatGear.ACCEL:
 				boatGear = BoatGear.ACCEL;
+				v = 1.0f;
 				Speed += AccelForce;
 				TurnSpeed = MaxTurnSpeed;
 				if(Speed >= MaxSpeed)
@@ -99,22 +129,20 @@ public class ControllerBoat:BaseBoat
 
 			case BoatGear.BACK:
 				boatGear = BoatGear.BACK;
-				Debug.Log("bb");
-				v = -1.0f;
-				Speed += BackAccelForce;
+				v = 1.0f;
+				Speed -= BackAccelForce;
 				TurnSpeed = MaxTurnSpeed;
-				if(Speed >= BackMaxSpeed)
-					Speed = BackMaxSpeed;
+				if(Speed <= -BackMaxSpeed)
+					Speed = -BackMaxSpeed;
 				break;
 
 			case BoatGear.BREAK:
 				boatGear = BoatGear.BREAK;
-				Debug.Log("aa");
-				v = 1.0f;
 				Speed -= BreakForce;
 				TurnSpeed = MaxTurnSpeed;
 				if(Speed < 0)
 				{
+					Speed = 0;
 					boatGear = BoatGear.BACK;
 					TurnSpeed = 0;
 				}
@@ -133,28 +161,31 @@ public class ControllerBoat:BaseBoat
 		}
 	}
 	#endregion
-	
+
+	#region 3. 조이스틱
 	private void Joysticks()
 	{
-		if(Input.GetKey(KeyCode.Joystick1Button5) && v > 0)
+		if(Input.GetKey(KeyCode.Joystick1Button2))
 		{
 			BoatGearState(BoatGear.ACCEL);
-		}
-		if(v < 0)
+		}else if(Input.GetKey(KeyCode.Joystick1Button3))
 		{
-			BoatGearState(BoatGear.BREAK);
-		}
-		if(Input.GetKey(KeyCode.Joystick1Button4))
+			if(boatGear == BoatGear.BACK)
+				BoatGearState(BoatGear.BACK);
+			else
+				BoatGearState(BoatGear.BREAK);
+		}else
 		{
-			BoatGearState(BoatGear.BREAK);
+			BoatGearState(BoatGear.N);
 		}
+		
 	}
+	#endregion
 	private void InputDirection()
 	{
 		h = Input.GetAxis("Horizontal");
 		v = Input.GetAxis("Vertical");
-		AccelAndBreak();
-		//Joysticks();
-		
+		//AccelAndBreak();
+		Joysticks();
 	}
 }
