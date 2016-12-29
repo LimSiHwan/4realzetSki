@@ -21,7 +21,6 @@ public abstract class BaseBoat : MonoBehaviour {
 
 	public float Gravity {get { return baseGravity;} }
 	public float TerminalVelocity {get { return terminalVelocity;} }
-
 	
 	public float VerticalVelocity {get;set; }
 	//최대 속력
