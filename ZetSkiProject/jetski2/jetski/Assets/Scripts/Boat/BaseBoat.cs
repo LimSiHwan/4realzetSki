@@ -10,7 +10,6 @@ public abstract class BaseBoat : MonoBehaviour {
 		ACCEL,
 		BACK
 	}
-
 	public Rigidbody rbody;
 	public Transform thisTransform;
 	protected BaseBoatState baseBoatState;
@@ -26,7 +25,7 @@ public abstract class BaseBoat : MonoBehaviour {
 	
 	public float VerticalVelocity {get;set; }
 	//최대 속력
-	private const float baseMaxSpeed = 700.0f;
+	private const float baseMaxSpeed = 500.0f;
 	//후진시 최대 속력
 	private const float baseBackMaxSpeed = 300.0f;
 	//최대 턴 속도
@@ -61,6 +60,7 @@ public abstract class BaseBoat : MonoBehaviour {
 	protected Vector3 MoveVecter {get;set; }
 	private Vector3 MoveHandle;
 	
+	protected AudioSource _audio;
 
 	protected float v {get; set; }
 	protected float h {get; set; }
@@ -77,11 +77,13 @@ public abstract class BaseBoat : MonoBehaviour {
 		baseBoatState.Construct();
 		baseHandle = transform.FindChild("jetskihandle").gameObject;
 		MoveHandle = Vector3.zero;
+		_audio = gameObject.GetComponent<AudioSource>();
 	}
 	
 	void Update ()
 	{
 		UpdateBoat();
+		_audio.pitch = Speed / MaxSpeed + 0.3f;
 	}
 
 	protected virtual void Move()

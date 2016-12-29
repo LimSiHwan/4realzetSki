@@ -3,9 +3,7 @@ using System.Collections;
 using System;
 /*
  조이스틱의 동그라미 윗부분이 안눌려서 가속이안됨.
-	 */
-
-
+ */
 public class ControllerBoat:BaseBoat
 {
 	protected override void UpdateBoat ()
@@ -168,6 +166,7 @@ public class ControllerBoat:BaseBoat
 		if(Input.GetKey(KeyCode.Joystick1Button2))
 		{
 			BoatGearState(BoatGear.ACCEL);
+		
 		}else if(Input.GetKey(KeyCode.Joystick1Button3))
 		{
 			if(boatGear == BoatGear.BACK)

@@ -16,7 +16,7 @@ public class BaseCamera : MonoBehaviour {
 		tr = GetComponent<Transform>();
 	}
 	// Update is called once per frame
-	void FixedUpdate ()
+	void LateUpdate ()
 	{
 		//타겟의 각도와 나의 각도를 잡아줌.. lerp와 비슷함
 		float currYAngle = Mathf.LerpAngle(tr.eulerAngles.y,target.eulerAngles.y,dampRotate * Time.deltaTime);
