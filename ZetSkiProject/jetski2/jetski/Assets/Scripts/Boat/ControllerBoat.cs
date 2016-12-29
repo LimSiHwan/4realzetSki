@@ -12,7 +12,6 @@ public class ControllerBoat:BaseBoat
 		Debug.Log("Speed = " + Speed);
 		v = baseBoatState.ProcessMotion(v);
 		h = baseBoatState.ProcessRotation(h);
-	
 
 		if(Input.GetKey(KeyCode.Joystick1Button1))
 		{
@@ -186,5 +185,14 @@ public class ControllerBoat:BaseBoat
 		v = Input.GetAxis("Vertical");
 		//AccelAndBreak();
 		Joysticks();
+	}
+	void OnCollisionEnter(Collision col)
+	{
+		if(col.gameObject.CompareTag("WallCollider"))
+		{
+			Debug.Log("벽에 부딫혔다.");
+			Speed = Speed - 100.0f;
+			thisTransform.position = new Vector3(thisTransform.position.x, thisTransform.position.y + 1.0f, thisTransform.position.z);
+		}
 	}
 }
