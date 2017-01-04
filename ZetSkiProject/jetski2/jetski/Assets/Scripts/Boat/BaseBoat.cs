@@ -8,7 +8,8 @@ public abstract class BaseBoat : MonoBehaviour {
 		N,
 		BREAK,
 		ACCEL,
-		BACK
+		BACK,
+		NoneKEY
 	}
 	public Rigidbody rbody;
 	public Transform thisTransform;
@@ -125,7 +126,7 @@ public abstract class BaseBoat : MonoBehaviour {
 					MoveHandle.z = 0;
 			}
 		}
-		baseHandle.transform.localEulerAngles = new Vector3(270, 0, 270 + MoveHandle.z);
+		baseHandle.transform.localEulerAngles = new Vector3(270, 0, 0 + MoveHandle.z);
 	}
 
 	public void ChangeState(string stateName)

@@ -9,7 +9,7 @@ public class ControllerBoat:BaseBoat
 	protected override void UpdateBoat ()
 	{
 		InputDirection();
-		Debug.Log("Speed = " + Speed);
+		//Debug.Log("Speed = " + Speed);
 		v = baseBoatState.ProcessMotion(v);
 		h = baseBoatState.ProcessRotation(h);
 
@@ -127,6 +127,7 @@ public class ControllerBoat:BaseBoat
 			case BoatGear.BACK:
 				boatGear = BoatGear.BACK;
 				v = 1.0f;
+				h = -h;
 				Speed -= BackAccelForce;
 				TurnSpeed = MaxTurnSpeed;
 				if(Speed <= -BackMaxSpeed)
@@ -141,7 +142,7 @@ public class ControllerBoat:BaseBoat
 				{
 					Speed = 0;
 					boatGear = BoatGear.BACK;
-					TurnSpeed = 0;
+					//TurnSpeed = 0;
 				}
 				break;
 
@@ -149,12 +150,14 @@ public class ControllerBoat:BaseBoat
 				boatGear = BoatGear.N;
 				Speed -= NoneBreakForce;
 				TurnSpeed = MaxTurnSpeed;
-				if(Speed < 0)
+				if(Speed < 50)
 				{
-					Speed = 0;
-					TurnSpeed = 0;
+					v = 1.0f;
+					Speed = 50;
+					//TurnSpeed = 0;
 				}
 				break;
+				
 		}
 	}
 	#endregion
@@ -192,7 +195,18 @@ public class ControllerBoat:BaseBoat
 		{
 			Debug.Log("벽에 부딫혔다.");
 			Speed = Speed - 100.0f;
-			thisTransform.position = new Vector3(thisTransform.position.x, thisTransform.position.y + 1.0f, thisTransform.position.z);
+			//thisTransform.position = new Vector3(thisTransform.position.x, thisTransform.position.y + 0.1f, thisTransform.position.z);
+			rbody.constraints = RigidbodyConstraints.FreezeRotation;
+		}
+	}
+	void OnCollisionExit(Collision col)
+	{
+		if(col.gameObject.CompareTag("WallCollider"))
+		{
+			Debug.Log("벽에 부딫혔다.");
+			Speed = Speed - 100.0f;
+			//thisTransform.position = new Vector3(thisTransform.position.x, thisTransform.position.y + 1.0f, thisTransform.position.z);
+			rbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 		}
 	}
 }
